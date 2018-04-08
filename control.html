@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Control Page</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <style>
+  li a{
+    padding:0;
+  }
+  </style>
+</head>
+<body>
+  <ul id="slide-out" class="side-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="control.html">Temp & Humidity Control</a></li>
+  </ul>
+  <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+  <div class="container">
+    <div class = "row">
+      <form class = "col s12">
+        <div class = "row">
+            <label>Temperature Range</label>
+            <p class = "range-field">
+              <input type = "range" id = "temp_range" min = "20" max = "70" />
+            </p>
+        </div>           
+        <button class="btn waves-effect waves-light" type="submit" name="set_temp" id="set_temp">Set
+          <i class="material-icons right">send</i>
+        </button>
+        <br><br><br><br>
+        <div class = "row">
+            <label>Humidity Range</label>
+            <p class = "range-field">
+              <input type = "range" id = "humidity_range" min = "0" max = "100" />
+            </p>
+        </div>           
+        <button class="btn waves-effect waves-light" type="submit" name="set_humidity" id="set_humidity">Set
+          <i class="material-icons right">send</i>
+        </button> 
+      </form>       
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+</body>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".button-collapse").sideNav();
+    $writeAPIkey = "SVDE7NHMSO8GUO1N";
+    $("#set_temp").click(function(){
+      uploadData("field3",$("#temp_range").val());
+      return false;
+    });
+
+    $("set_humidity").click(function(){
+      uploadData("field4",$("#humidity_range").val());
+      return false;
+    });
+
+    function uploadData($field,$data){
+      $.ajax({
+            url: "https://api.thingspeak.com/update",
+            data: {"api_key":"SVDE7NHMSO8GUO1N",$field:$data},
+            type: "POST",
+            contentType: "multipart/form-data",   
+            crossDomain: true,             
+            success: function(data){alert("succesfully posted the data");},
+            error: function(err){alert("Oops! Something went wrong! Please don't set the value frequently");}
+        });
+      return false;
+    }
+    function readCookie(name) {
+      var i, c, ca, nameEQ = name + "=";
+      ca = document.cookie.split(';');
+      for(i=0;i < ca.length;i++) {
+          c = ca[i];
+          while (c.charAt(0)==' ') {
+            c = c.substring(1,c.length);
+          }
+          if (c.indexOf(nameEQ) == 0) {
+              return c.substring(nameEQ.length,c.length);
+          }
+      }
+      return '';
+    }
+    if(readCookie('sessionID') != $writeAPIkey){
+        alert("You need to login first");
+        window.location.href = "login.html";
+    }
+  });
+  </script>
+</html>

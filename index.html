@@ -1,0 +1,68 @@
+<html>
+<head>
+  <title>Welcome</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <style>
+  .row{
+    padding-left: 100px;
+  }
+  .collapsible{
+    width:500px;
+    top: 0;
+    right: 0;
+    margin-left: 250px;
+    bottom: 0;
+  }
+  </style>
+</head>
+<body>
+  <ul id="slide-out" class="side-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="control.html">Temp & Humidity Control</a></li>
+  </ul>
+  <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
+  <ul class="collapsible" data-collapsible="expandable">
+    <li>
+      <div class="collapsible-header">Temperature</div>
+      <div class="collapsible-body">
+        <iframe width="500" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/442829/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=475&title=Temperature&type=line"></iframe>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header">Humdity</div>
+      <div class="collapsible-body">
+        <iframe width="500" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/442829/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Humidity&type=line"></iframe>
+      </div>
+    </li>
+  </ul>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $(".button-collapse").sideNav();
+    $writeAPIkey = "SVDE7NHMSO8GUO1N";
+    function readCookie(name) {
+      var i, c, ca, nameEQ = name + "=";
+      ca = document.cookie.split(';');
+      for(i=0;i < ca.length;i++) {
+          c = ca[i];
+          while (c.charAt(0)==' ') {
+            c = c.substring(1,c.length);
+          }
+          if (c.indexOf(nameEQ) == 0) {
+              return c.substring(nameEQ.length,c.length);
+          }
+      }
+      return '';
+    }
+    if(readCookie('sessionID') != $writeAPIkey){
+        alert("You need to login first");
+        window.location.href = "login.html";
+    }
+  });
+  </script>
+</body>
+
+</html>
